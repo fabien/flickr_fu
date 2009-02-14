@@ -67,7 +67,7 @@ module Flickr
       options.merge!(:api_key => @api_key, :method => method)
       sign_request(options)
       
-      rsp = request_over_http(options, http_method, endpoint)
+      rsp = request_over_http(options, http_method, endpoint).strip
       
       rsp = '<rsp stat="ok"></rsp>' if rsp == ""
       xm = XmlMagic.new(rsp)
@@ -110,6 +110,9 @@ module Flickr
 
     # creates and/or returns the Flickr::Contacts object
     def contacts() @contacts ||= Flickr::Contacts.new(self) end
+      
+    # creates and/or returns the Flickr::PhotoSets object
+    def photosets() @photosets ||= Flickr::PhotoSets.new(self) end
             
     protected
     
@@ -117,9 +120,9 @@ module Flickr
     def request_over_http(options, http_method, endpoint)
       if http_method == :get
         api_call = endpoint + "?" + options.collect{|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
-        Net::HTTP.get(URI.parse(api_call))
+        RestClient.get(api_call)
       else
-        Net::HTTP.post_form(URI.parse(endpoint), options).body
+        RestClient.post(endpoint, options)
       end
     end
     

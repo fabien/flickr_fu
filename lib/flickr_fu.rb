@@ -9,9 +9,10 @@ require 'digest/md5'
 require 'yaml'
 require 'time'
 require 'date'
+require 'rest_client'
 
 # base must load first
-%w(base test auth token photos photo photo_response comment note size uploader status people person license errors contacts contact).each do |file|
+%w(base test auth token photos photo photo_response photo_sets photo_set uploader status comment note size people person license errors contacts contact).each do |file|
   require File.join(File.dirname(__FILE__), 'flickr', file)
 end
 

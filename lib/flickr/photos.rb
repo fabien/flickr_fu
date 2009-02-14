@@ -128,7 +128,7 @@ class Flickr::Photos < Flickr::Base
                                 :method => 'search',
                                 :options => options) do |photos|
       rsp.photos.photo.each do |photo|
-        attributes = create_attributes(photo)
+        attributes = self.class.create_attributes(photo)
 
         photos << Photo.new(@flickr, attributes)
       end if rsp.photos.photo
@@ -161,7 +161,7 @@ class Flickr::Photos < Flickr::Base
                                 :method => 'flickr.photos.getRecent',
                                 :options => options) do |photos|
       rsp.photos.photo.each do |photo|
-        attributes = create_attributes(photo)
+        attributes = self.class.create_attributes(photo)
 
         photos << Photo.new(@flickr, attributes)
       end if rsp.photos.photo
@@ -182,7 +182,7 @@ class Flickr::Photos < Flickr::Base
                                 :method => 'flickr.interestingness.getList',
                                 :options => options) do |photos|
       rsp.photos.photo.each do |photo|
-        attributes = create_attributes(photo)
+        attributes = self.class.create_attributes(photo)
 
 
         photos << Photo.new(@flickr, attributes)
@@ -212,8 +212,7 @@ class Flickr::Photos < Flickr::Base
       :is_public => rsp.photo.visibility[:public], :is_friend => rsp.photo.visibility[:is_friend], :is_family => rsp.photo.visibility[:is_family])
   end
   
-  protected
-  def create_attributes(photo)
+  def self.create_attributes(photo)
     {:id => photo[:id], 
      :owner => photo[:owner], 
      :secret => photo[:secret], 

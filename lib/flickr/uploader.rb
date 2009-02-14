@@ -67,7 +67,7 @@ class Flickr::Uploader < Flickr::Base
 
     headers = {"Content-Type" => "multipart/form-data; boundary=" + form.boundary}
 
-    rsp = Net::HTTP.start('api.flickr.com').post("/services/upload/", form.to_s, headers).body
+    rsp = RestClient.post("http://api.flickr.com/services/upload/", form.to_s, headers).body
 
     xm = XmlMagic.new(rsp)
 

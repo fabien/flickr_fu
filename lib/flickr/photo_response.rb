@@ -3,6 +3,8 @@
 class Flickr::Photos::PhotoResponse
   attr_accessor :page, :pages, :per_page, :total, :photos, :api, :method, :options
   
+  attr_accessor :prev_url, :next_url
+  
   # creates an object to hold the search response.
   # 
   # Params

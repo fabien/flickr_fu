@@ -1,7 +1,9 @@
 # wrapping class to hold a flickr photoset
 # 
 class Flickr::PhotoSets::PhotoSet
-  attr_accessor :photoset_id, :primary, :secret, :server, :farm, :photos, :videos, :title, :description 
+  attr_accessor :photoset_id, :primary, :secret, :server, :farm, :photos, :videos, :title, :description
+  
+  alias :id :photoset_id
   
   def initialize(flickr, attributes)
     @flickr = flickr
@@ -9,8 +11,8 @@ class Flickr::PhotoSets::PhotoSet
       send("#{k}=", v)
     end
   end
-  
-  def photos(options={})
+    
+  def get_photos(options={})
     options.merge!(:extras => "license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media")
     options.merge!(:photoset_id => photoset_id)
     

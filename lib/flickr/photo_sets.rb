@@ -12,7 +12,7 @@ class Flickr::PhotoSets < Flickr::Base
   
   def get_photos(photoset_id, options = {})
     photoset = PhotoSet.new(@flickr, :photoset_id => photoset_id)
-    photoset.photos
+    photoset.get_photos
   end
 
   # Get the photosets list.
@@ -43,8 +43,8 @@ class Flickr::PhotoSets < Flickr::Base
       :secret       => set[:secret],
       :server       => set[:server],
       :farm         => set[:farm],
-      :photos       => set[:photos],
-      :videos       => set[:videos],
+      :photos       => set[:photos].to_i,
+      :videos       => set[:videos].to_i,
       :title        => set.title.to_s,
       :description  => set.description.to_s
     }

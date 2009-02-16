@@ -5,6 +5,8 @@ class Flickr::Photos::Photo
   attr_accessor :info_added, :description, :original_secret, :owner_username, :owner_realname, :url_photopage, :notes # info attributes
   attr_accessor :comments # comment attributes
   
+  SIZES = [:original, :large, :medium, :small, :thumbnail, :thumb, :square]
+  
   # create a new instance of a flickr photo.
   # 
   # Params
@@ -43,6 +45,10 @@ class Flickr::Photos::Photo
 	# Mind that you still need to call getSizes if you go out for the original image.
 	if size == :original
 	  size_hash[size.to_s].source if size_hash.has_key? size.to_s
+	elsif size == :min
+	  sizes.first.source
+	elsif size == :max
+	  sizes.last.source
 	else
 	  key = "_#{size_key(size.to_sym)}"
 	  key = "" if key == "_"
@@ -87,6 +93,18 @@ class Flickr::Photos::Photo
       f.close
       f
     end
+  end
+  
+  # Set meta information for a photo.
+  # 
+  # Params
+  # * title (Required)
+  #     a descriptive title
+  # * description (Required)
+  #     a photo caption
+  def set_meta(title, description = '')
+    @flickr.send_request('flickr.photos.setMeta', {:photo_id => self.id, :title => title, :description => description}, :post)
+    true
   end
   
   # Add tags to a photo.
@@ -236,7 +254,7 @@ class Flickr::Photos::Photo
 
   private
   attr_accessor :comment_count
-  
+    
   # convert the size to the key used in the flickr url
   def size_key(size)
     case size.to_sym

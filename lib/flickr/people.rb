@@ -34,10 +34,19 @@ class Flickr::People < Flickr::Base
   # * username (Required)
   #     the username of the user to get information for
   #
-  def find_by_username(username)
+  def get_nsid_from_username(username)
     rsp = @flickr.send_request('flickr.people.findByUsername', {:username => username})
-    
-    find_by_id(rsp.user[:nsid])
+    rsp.user[:nsid]
+  end
+  
+  # Get information about a user.
+  # 
+  # Params
+  # * username (Required)
+  #     the username of the user to get information for
+  #
+  def find_by_username(username)
+    find_by_id(nsid_from_username(username))
   end
   
   # Get information about a user.

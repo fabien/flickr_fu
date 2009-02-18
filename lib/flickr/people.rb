@@ -28,6 +28,11 @@ class Flickr::People < Flickr::Base
                         :photo_first_taken => (Time.parse(rsp.person.photos.firstdatetaken.to_s) rescue nil))
   end
   
+  def get_nsid_from_url(url)
+    rsp = @flickr.send_request('flickr.urls.lookupUser', {:url => url})
+    rsp.user[:id]
+  end
+  
   # Get information about a user.
   # 
   # Params
